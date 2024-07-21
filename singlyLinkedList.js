@@ -95,6 +95,65 @@ class SinglyLinkedList {
     foundNode.val = val;
     return true;
   }
+  // 원하는 위치에 노드 추가
+  insert(index, val) {
+    if (this.length < index || index < 0) return false;
+    if (this.length === 0 && index === 0) return !!this.unshift(val);
+    if (index === this.length) return !!this.push(val);
+
+    const newNode = new Node(val);
+    const foundNode = this.get(index - 1);
+    const temp = foundNode.next;
+
+    foundNode.next = newNode;
+    newNode.next = temp;
+    this.length++;
+
+    return true;
+  }
+  // 원하는 위치에 해당하는 노드 삭제
+  remove(index) {
+    if (index >= this.length || index < 0) return undefined;
+    if (index === 0 && this.length === 0) return this.shift();
+    if (index === this.length - 1) return this.pop();
+
+    const prevNode = this.get(index - 1);
+    const removed = prevNode.next.next;
+    prevNode.next = removed;
+    this.length--;
+
+    return removed;
+  }
+  // 노드를 역순으로 변경
+  reverse() {
+    let current = this.head;
+    this.head = this.tail;
+    this.tail = current;
+
+    let next;
+    let prev = null; // tail의 next 값은 null이라서
+
+    // 위츠를 서로 바꾼다는 느낌보다는
+    // next 노드를 앞으로 가져오고 이전 노드를 next로 연결한다는 느낌으로 생각하면 좋을듯
+    for (let i = 0; i < this.length; i++) {
+      next = current.next;
+      current.next = prev;
+      prev = current;
+      current = next;
+    }
+
+    return this;
+  }
+  // 역순이 잘 되었는지 확인용
+  print() {
+    let arr = [];
+    let current = this.head;
+    while (current) {
+      arr.push(current.val);
+      current = current.next;
+    }
+    console.log(arr);
+  }
 }
 
 const list = new SinglyLinkedList();
@@ -102,6 +161,6 @@ const list = new SinglyLinkedList();
 list.push("hi");
 list.push("goodbye");
 list.push("~!~!");
+list.push("cool");
 
-console.log(list.set(5, "lala"));
-console.log(list);
+console.log(list.reverse());
