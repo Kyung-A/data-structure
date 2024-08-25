@@ -97,4 +97,42 @@ class DoublyLinkedList {
       return cur;
     }
   }
+  // 해당 index의 node 변경
+  set(index, val) {
+    let oldNode = this.get(index);
+    if (!oldNode) return false;
+    oldNode.val = val;
+    return true;
+  }
+  // 해당 index의 node 추가
+  insert(index, val) {
+    const beforeNode = this.get(index - 1);
+    if (index === 0) return this.unshift(val);
+    if (index === this.length) return this.push(val);
+    if (!beforeNode) return false;
+
+    const newNode = new Node(val);
+    const afterNode = beforeNode.next;
+
+    beforeNode.next = newNode;
+    newNode.prev = beforeNode;
+    newNode.next = afterNode;
+    afterNode.prev = newNode;
+
+    this.length++;
+    return true;
+  }
+  remove(index) {
+    const removeNode = this.get(index);
+    if (index === 0) return this.shift();
+    if (index === this.length) return this.pop();
+    if (!removeNode) return undefined;
+
+    removeNode.prev.next = removeNode.next;
+    removeNode.next.prev = removeNode.prev;
+    removeNode.next = null;
+    removeNode.prev = null;
+    this.length--;
+    return removeNode;
+  }
 }
