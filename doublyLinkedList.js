@@ -58,4 +58,43 @@ class DoublyLinkedList {
     this.length--;
     return oldHead;
   }
+  // 맨 앞에 node 추가
+  unshift(val) {
+    const newNode = new Node(val);
+
+    if (this.length === 0) {
+      this.head = newNode;
+      this.tail = this.head;
+    } else {
+      this.head.prev = newNode;
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+
+    this.length++;
+    return this;
+  }
+  get(index) {
+    if (index < 0 || index >= this.length) return undefined;
+
+    if (Math.floor(this.length / 2) >= index) {
+      let count = this.length - 1;
+      let cur = this.tail;
+
+      while (count !== index) {
+        cur = cur.prev;
+        count--;
+      }
+      return cur;
+    } else {
+      let count = 0;
+      let cur = this.head;
+
+      while (count !== index) {
+        cur = cur.next;
+        count++;
+      }
+      return cur;
+    }
+  }
 }
